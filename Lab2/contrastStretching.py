@@ -8,6 +8,8 @@ class ConstS:
         self.a=0
         self.b=255
         self.img=_img
+        self.c=0
+        self.d=255
 
     def Formula(self,Fxy):
         return (Fxy-self.c)*((self.b-self.a)/(self.d-self.c))+self.a
@@ -20,20 +22,17 @@ class ConstS:
                 newimg[i].append(self.Formula(self.img[i,j]))
         return np.array(newimg)
 
-    def CDlimit(self):
-        hist=cv.calcHist([self.img],[0],None,[256],[0,256])
+    def CDlimit(self,l=0):
+        hist,bins =np.histogram(self.img.flatten(),256,[0,256])
+        self.c=np.min(self.img)
+        self.d=np.max(self.img)
+
 
 
 img=cv.imread('contrast.jpg',0)
 
 contrast=ConstS(img)
 contrast.CDlimit()
+newimg=contrast.contrastS()
 
-#newimg=contrast.contrastS()
-#print(img)
-#print(newimg)
-
-#plt.subplot(1,2,1),plt.imshow(img,'gray')
-#plt.subplot(1,2,2),plt.imshow(newimg,'gray')
-
-#plt.show()
+cv.imwrite('outimg.jpg',newimg)
