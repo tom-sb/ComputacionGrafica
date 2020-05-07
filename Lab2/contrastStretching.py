@@ -14,7 +14,7 @@ class ConstS:
     def Formula(self,Fxy):
         return (Fxy-self.c)*((self.b-self.a)/(self.d-self.c))+self.a
 
-    def contrastS(self):
+    def Stretch(self):
         rows,columns=self.img.shape
         newimg=[[] for i in range(rows)]
         for i in range(rows):
@@ -24,15 +24,14 @@ class ConstS:
 
     def CDlimit(self,l=0):
         hist,bins =np.histogram(self.img.flatten(),256,[0,256])
+
         self.c=np.min(self.img)
         self.d=np.max(self.img)
-
-
 
 img=cv.imread('contrast.jpg',0)
 
 contrast=ConstS(img)
 contrast.CDlimit()
-newimg=contrast.contrastS()
+newimg=contrast.Stretch()
 
 cv.imwrite('outimg.jpg',newimg)
