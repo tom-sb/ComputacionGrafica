@@ -20,14 +20,14 @@ class ConstS:
                 newimg[i].append(self.Formula(self.img[i,j]))
         return np.array(newimg)
 
-    def limitXY(self):
+    def CDlimit(self):
         hist=cv.calcHist([self.img],[0],None,[256],[0,256])
 
 
 img=cv.imread('contrast.jpg',0)
 
 contrast=ConstS(img)
-contrast.limitXY()
+contrast.CDlimit()
 
 #newimg=contrast.contrastS()
 #print(img)
