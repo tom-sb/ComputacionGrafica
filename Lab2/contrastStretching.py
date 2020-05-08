@@ -12,7 +12,7 @@ class ConstS:
         self.d=255
 
     def Formula(self,Fxy):
-        return ((Fxy-self.c)*((self.b-self.a)/(self.d-self.c))+self.a)%256
+        return (((Fxy-self.c)*((self.b-self.a)/(self.d-self.c)))+self.a)%256
 
     def Stretch(self):
         rows,columns=self.img.shape
@@ -27,6 +27,23 @@ class ConstS:
         
         self.c=np.min(self.img)
         self.d=np.max(self.img)
+
+        rows,columns=self.img.shape
+        l=(255*l)/100
+        i=self.c
+        if(l!=0):
+            while True:
+                if(hist[self.c]>=int(l)):
+                    self.c=i
+                    break
+                i=i+1
+    
+            i=self.d
+            while True:
+                if(hist[self.d]>=int(l)):
+                    self.d=i
+                    break
+                i=i-1
 
 def addOutlier(img,r,c):
     for i in range(r):
