@@ -19,31 +19,39 @@ class ConstS:
         newimg=[[] for i in range(rows)]
         for i in range(rows):
             for j in range(columns):
-                newimg[i].append(self.Formula(self.img[i,j]))
+                pixel=0
+                if(self.c < self.img[i,j] < self.d):
+                    pixel=self.img[i,j]
+                else:
+                    pixel=((self.d-self.c)/2)+self.c
+                newimg[i].append(self.Formula(pixel))
         return np.array(newimg)
 
     def CDlimit(self,l=0):
-        hist,bins =np.histogram(self.img.flatten(),256,[0,256])
+        self.hist,bins =np.histogram(self.img.flatten(),256,[0,256])
         
         self.c=np.min(self.img)
         self.d=np.max(self.img)
 
         rows,columns=self.img.shape
-        l=(rows*columns*l)/100
-        if(l!=0):
-            i=self.c
-            while True:
-                if(hist[i]>=int(l)):
-                    self.c=i
-                    break
-                i=i+1
-    
-            i=self.d
-            while True:
-                if(hist[i]>=int(l)):
-                    self.d=i
-                    break
-                i=i-1
+        l=((rows*columns)/100)*l
+        
+        i=self.c
+        count=0
+        while True:
+            count=count+self.hist[i]
+            if(count>int(l)):
+                self.c=i
+                break
+            i=i+1
+        i=self.d
+        count=0
+        while True:
+            count=count+self.hist[i]
+            if(count>=int(l)):
+                self.d=i
+                break
+            i=i-1
 
 def addOutlier(img,r,c):
     for i in range(r):
@@ -65,8 +73,8 @@ cv.imwrite('imgoutlier.jpg',img)
 
 #Aplicando ContrastStretch con limites
 contrast1=ConstS(img)
-contrast1.CDlimit(15)
-newimg1=contrast.Stretch()
+contrast1.CDlimit(0)
+newimg1=contrast1.Stretch()
 
 cv.imwrite('outimgoutlier.jpg',newimg1)
 
