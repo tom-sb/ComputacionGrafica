@@ -29,18 +29,18 @@ class ConstS:
         self.d=np.max(self.img)
 
         rows,columns=self.img.shape
-        l=(255*l)/100
-        i=self.c
+        l=(rows*columns*l)/100
         if(l!=0):
+            i=self.c
             while True:
-                if(hist[self.c]>=int(l)):
+                if(hist[i]>=int(l)):
                     self.c=i
                     break
                 i=i+1
     
             i=self.d
             while True:
-                if(hist[self.d]>=int(l)):
+                if(hist[i]>=int(l)):
                     self.d=i
                     break
                 i=i-1
