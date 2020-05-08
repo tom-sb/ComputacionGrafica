@@ -12,7 +12,7 @@ class ConstS:
         self.d=255
 
     def Formula(self,Fxy):
-        return (Fxy-self.c)*((self.b-self.a)/(self.d-self.c))+self.a
+        return ((Fxy-self.c)*((self.b-self.a)/(self.d-self.c))+self.a)%256
 
     def Stretch(self):
         rows,columns=self.img.shape
@@ -24,14 +24,33 @@ class ConstS:
 
     def CDlimit(self,l=0):
         hist,bins =np.histogram(self.img.flatten(),256,[0,256])
-
+        
         self.c=np.min(self.img)
         self.d=np.max(self.img)
 
+def addOutlier(img,r,c):
+    for i in range(r):
+        for j in range(c):
+            img[i,j]=1
+
 img=cv.imread('contrast.jpg',0)
 
+#ContrastStretching sin outlier
 contrast=ConstS(img)
 contrast.CDlimit()
 newimg=contrast.Stretch()
 
 cv.imwrite('outimg.jpg',newimg)
+
+#Agregando outlier a la imagen
+addOutlier(img,30,30)
+cv.imwrite('imgoutlier.jpg',img)
+
+#Aplicando ContrastStretch con limites
+contrast1=ConstS(img)
+contrast1.CDlimit(15)
+newimg1=contrast.Stretch()
+
+cv.imwrite('outimgoutlier.jpg',newimg1)
+
+
