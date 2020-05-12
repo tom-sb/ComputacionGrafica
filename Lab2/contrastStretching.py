@@ -73,7 +73,7 @@ cv.imwrite('imgoutlier.jpg',img)
 
 #Aplicando ContrastStretch con limites
 contrast1=ConstS(img)
-contrast1.CDlimit(0)
+contrast1.CDlimit(15)
 newimg1=contrast1.Stretch()
 
 cv.imwrite('outimgoutlier.jpg',newimg1)
